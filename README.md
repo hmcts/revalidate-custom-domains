@@ -23,16 +23,21 @@ Runs at midnight (00:00) every Sunday
 
 ## Usage
 
-### Setting Up
+### Setting Up Locally
 
 **Clone the Repository**:
-   `git clone https://github.com/yourusername/revalidate-custom-domains.git`
+   
+   ```git clone https://github.com/yourusername/revalidate-custom-domains.git```
 
-**Running the Script Locally**:
 
-Set Your Personal Access Token: `export AZURE_DEVOPS_PAT="your_pat_here"`
+**Set Your Personal Access Token**: 
 
-Make the Script Executable: `chmod +x delete_invalid_custom_domains.sh`
+   ```export AZURE_DEVOPS_PAT="your_pat_here"```
 
-Execute the Script: `./delete_invalid_custom_domains.sh`
+
+**Execute the Script**: 
+
+   ```chmod +x delete_invalid_custom_domains.sh```
+   
+   ```./delete_invalid_custom_domains.sh```
    
