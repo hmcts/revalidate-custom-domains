@@ -1,0 +1,27 @@
+name: Run delete_invalid_custom_domains.sh
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0' # This sets the workflow to run at midnight (00:00) every Sunday
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Azure CLI
+      uses: azure/CLI@v1
+
+    - name: Run delete_invalid_custom_domains.sh
+      env:
+        AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+      run: |
+        chmod +x ./delete_invalid_custom_domains.sh
+        ./delete_invalid_custom_domains.sh
