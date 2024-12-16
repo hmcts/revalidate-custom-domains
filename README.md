@@ -32,7 +32,7 @@ Runs at midnight (00:00) every Sunday
 
 Set Your Personal Access Token: `export AZURE_DEVOPS_PAT="your_pat_here"`
 
-Make the Script Executable: `chmod +x delete__custom_domains.sh`
+Make the Script Executable: `chmod +x delete_invalid_custom_domains.sh`
 
-Execute the Script: `./delete_all_custom_domains.sh`
+Execute the Script: `./delete_invalid_custom_domains.sh`
    
