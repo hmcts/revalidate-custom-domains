@@ -21,7 +21,7 @@ The `revalidate-custom-domains` repository contains a script designed to automat
 
 ### Setting Up
 
-1. **Clone the Repository**:
+**Clone the Repository**:
    ```sh
    git clone https://github.com/yourusername/revalidate-custom-domains.git
    cd revalidate-custom-domains
