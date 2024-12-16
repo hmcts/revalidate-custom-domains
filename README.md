@@ -17,11 +17,22 @@ The `revalidate-custom-domains` repository contains a script designed to automat
 - Appropriate permissions to access and manage Azure subscriptions, resource groups, and static web apps.
 - Personal Access Token (PAT) for Azure DevOps or GitHub if pipeline execution is required.
 
+## Default run hours
+
+Runs at midnight (00:00) every Sunday
+
 ## Usage
 
 ### Setting Up
 
 **Clone the Repository**:
-   ```sh
-   git clone https://github.com/yourusername/revalidate-custom-domains.git
-   cd revalidate-custom-domains
+   `git clone https://github.com/yourusername/revalidate-custom-domains.git`
+
+**Running the Script Locally**:
+
+Set Your Personal Access Token: `export AZURE_DEVOPS_PAT="your_pat_here"`
+
+Make the Script Executable: `chmod +x delete__custom_domains.sh`
+
+Execute the Script: `./delete_all_custom_domains.sh`
+   
