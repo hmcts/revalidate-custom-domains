@@ -1,0 +1,35 @@
+name: Run test_delete_invalid_custom_domains.sh
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0' # This sets the workflow to run at midnight (00:00) every Sunday
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: AZ CLI login
+      uses: azure/login@v2
+      with:
+        client-id: 633b591d-916a-4a38-8132-dd34e0b8dd4e # custom-domain-revalidator
+        tenant-id: 531ff96d-0ae9-462a-8d2d-bec7c0b42082 # HMCTS.NET
+        allow-no-subscriptions: true
+
+    - name: Run test_delete_invalid_custom_domains.sh
+      env:
+        AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+      run: |
+        chmod +x ./scripts/test_delete_invalid_custom_domains.sh
+        ./scripts/test_delete_invalid_custom_domains.sh
