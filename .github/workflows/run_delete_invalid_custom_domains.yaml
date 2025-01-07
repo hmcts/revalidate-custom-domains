@@ -31,5 +31,5 @@ jobs:
       env:
         AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
       run: |
-        chmod +x ./delete_invalid_custom_domains.sh
-        ./delete_invalid_custom_domains.sh
+        chmod +x ./scripts/delete_invalid_custom_domains.sh
+        ./scripts/delete_invalid_custom_domains.sh
