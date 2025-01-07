@@ -46,7 +46,7 @@ CUSTOM_DOMAINS=$(az staticwebapp hostname list --resource-group $RESOURCE_GROUP 
 while IFS=$'\t' read -r DOMAIN STATUS; do
     if [[ $STATUS == "Failed" ]]; then
         echo "  [FAILED] Deleting custom domain: $DOMAIN"
-        az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN
+        az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN --yes
         DOMAIN_DELETED=true
     else
         echo "  [READY] Skipping custom domain: $DOMAIN"
