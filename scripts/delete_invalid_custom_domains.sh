@@ -47,6 +47,9 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
     for APP in $STATIC_WEB_APPS; do
         echo "----------------------------------------"
         echo "Processing static web app: $APP in resource group: $RESOURCE_GROUP"
+
+        # Reset DOMAIN_DELETED for each static web app
+        DOMAIN_DELETED=false
         
         # Get tags for the current static web app
         TAGS=$(az staticwebapp show --name $APP --resource-group $RESOURCE_GROUP --query "tags" -o json)
