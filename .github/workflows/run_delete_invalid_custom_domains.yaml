@@ -23,7 +23,7 @@ jobs:
     - name: AZ CLI login
       uses: azure/login@v2
       with:
-        client-id: 2b6fa9d7-7dba-4600-a58a-5e25554997aa # DTS AKS Auto-Shutdown
+        client-id: 633b591d-916a-4a38-8132-dd34e0b8dd4e # custom-domain-revalidator
         tenant-id: 531ff96d-0ae9-462a-8d2d-bec7c0b42082 # HMCTS.NET
         allow-no-subscriptions: true
 
