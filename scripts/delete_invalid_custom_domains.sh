@@ -4,6 +4,9 @@
 SUBSCRIPTIONS=(
     "a8140a9e-f1b0-481f-a4de-09e2ee23f7ab:sds-platform-shutter-webapp-sbox-rg"
     "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb:cft-platform-shutter-webapp-sbox-rg"
+    "5ca62022-6aa2-4cee-aaa7-e7536c8d566c:sds-platform-shutter-webapp-prod-rg"
+    "8cbc6f36-7c56-4963-9d36-739db5d00b27:cft-platform-shutter-webapp-prod-rg"
+    "ed302caf-ec27-4c64-a05e-85731c3ce90e:MTA-STS-Site"
 )
 
 # Define your Azure DevOps pipelines
@@ -69,7 +72,9 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
             for PIPELINE_PAIR in "${PIPELINES[@]}"; do
                 IFS=":" read -r PIPELINE_TAG PIPELINE_ID <<< "$PIPELINE_PAIR"
                 if [ "$PIPELINE_TAG" = "$BUILT_FROM" ]; then
-                    trigger_pipeline $PIPELINE_ID
+                    echo "Triggering pipeline with ID: $PIPELINE_ID"
+                    # Uncomment the line below to actually run the pipeline
+                    # trigger_pipeline $PIPELINE_ID
                 fi
             done
         fi
