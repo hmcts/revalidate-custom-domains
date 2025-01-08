@@ -25,7 +25,23 @@ trigger_pipeline() {
     curl -u :$PAT \
          -X POST \
          -H "Content-Type: application/json" \
-         -d '{"resources": {}}' \
+         -d '{
+                "resources": {
+                    "repositories": {
+                    "self": {
+                        "refName": "refs/heads/master"
+                    }
+                    }
+                },
+                "variables": {
+                    "DEPLOYMENT_SBOX": {
+                    "value": "sbox shutter webapp environment: sbox component: shutter static webapp service connection: dcd-cftapps-sbox storage account rg: core-infra-sbox-rg storage account name: cftappssbox dependsOn: Precheck pipeline tests: false"
+                    },
+                    "DEPLOYMENT_PROD": {
+                    "value": "prod shutter webapp environment: prod component: shutter static webapp service connection: dcd-cftapps-prod storage account rg: core-infra-prod-rg storage account name: cftappsprod dependsOn: sbox shutter webapp"
+                    }
+                }
+            }' \
          "https://dev.azure.com/hmcts/PlatformOperations/_apis/pipelines/$pipeline_id/runs?api-version=6.0-preview.1"
 }
 
@@ -62,8 +78,7 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
         while IFS=$'\t' read -r DOMAIN STATUS; do
             if [[ $STATUS == "Failed" ]]; then
                 echo "  [FAILED] Deleting custom domain: $DOMAIN"
-                # Uncomment the line below to actually delete the domain
-                # az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN
+                # az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN --yes
                 DOMAIN_DELETED=true
             else
                 echo "  [READY] Skipping custom domain: $DOMAIN"
@@ -76,7 +91,6 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
                 IFS=":" read -r PIPELINE_TAG PIPELINE_ID <<< "$PIPELINE_PAIR"
                 if [ "$PIPELINE_TAG" = "$BUILT_FROM" ]; then
                     echo "Triggering pipeline with ID: $PIPELINE_ID"
-                    # Uncomment the line below to actually run the pipeline
                     # trigger_pipeline $PIPELINE_ID
                 fi
             done
