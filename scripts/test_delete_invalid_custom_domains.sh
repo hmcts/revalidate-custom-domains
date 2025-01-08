@@ -33,7 +33,7 @@ echo "----------------------------------------"
 echo "Processing static web app: $APP in resource group: $RESOURCE_GROUP"
 
 # Reset DOMAIN_DELETED for the static web app
-DOMAIN_DELETED=false
+DOMAIN_DELETED=true
 
 # Get tags for the current static web app
 TAGS=$(az staticwebapp show --name $APP --resource-group $RESOURCE_GROUP --query "tags" -o json)
