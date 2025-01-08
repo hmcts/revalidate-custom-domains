@@ -30,6 +30,8 @@ jobs:
     - name: Run test_delete_invalid_custom_domains.sh
       env:
         AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+        DEPLOYMENT_SBOX: "sbox shutter webapp environment: sbox component: shutter static webapp service connection: dcd-cftapps-sbox storage account rg: core-infra-sbox-rg storage account name: cftappssbox dependsOn: Precheck pipeline tests: false"
+        DEPLOYMENT_PROD: "prod shutter webapp environment: prod component: shutter static webapp service connection: dcd-cftapps-prod storage account rg: core-infra-prod-rg storage account name: cftappsprod dependsOn: sbox shutter webapp"
       run: |
         chmod +x ./scripts/test_delete_invalid_custom_domains.sh
         ./scripts/test_delete_invalid_custom_domains.sh
