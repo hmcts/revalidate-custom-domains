@@ -21,7 +21,23 @@ trigger_pipeline() {
     curl -u :$PAT \
          -X POST \
          -H "Content-Type: application/json" \
-         -d '{"resources": {}}' \
+         -d '{
+                "resources": {
+                    "repositories": {
+                    "self": {
+                        "refName": "refs/heads/main"
+                    }
+                    }
+                },
+                "variables": {
+                    "DEPLOYMENT_SBOX": {
+                    "value": "sbox shutter webapp environment: sbox component: shutter static webapp service connection: dcd-cftapps-sbox storage account rg: core-infra-sbox-rg storage account name: cftappssbox dependsOn: Precheck pipeline tests: false"
+                    },
+                    "DEPLOYMENT_PROD": {
+                    "value": "prod shutter webapp environment: prod component: shutter static webapp service connection: dcd-cftapps-prod storage account rg: core-infra-prod-rg storage account name: cftappsprod dependsOn: sbox shutter webapp"
+                    }
+                }
+            }' \
          "https://dev.azure.com/hmcts/PlatformOperations/_apis/pipelines/$pipeline_id/runs?api-version=6.0-preview.1"
 }
 
