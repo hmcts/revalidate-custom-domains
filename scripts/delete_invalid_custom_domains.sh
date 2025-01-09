@@ -78,7 +78,7 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
         while IFS=$'\t' read -r DOMAIN STATUS; do
             if [[ $STATUS == "Failed" ]]; then
                 echo "  [FAILED] Deleting custom domain: $DOMAIN"
-                # az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN --yes
+                az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN --yes
                 DOMAIN_DELETED=true
             else
                 echo "  [READY] Skipping custom domain: $DOMAIN"
@@ -91,7 +91,9 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
                 IFS=":" read -r PIPELINE_TAG PIPELINE_ID <<< "$PIPELINE_PAIR"
                 if [ "$PIPELINE_TAG" = "$BUILT_FROM" ]; then
                     echo "Triggering pipeline with ID: $PIPELINE_ID"
-                    # trigger_pipeline $PIPELINE_ID
+                    trigger_pipeline $PIPELINE_ID # First trigger of the pipeline
+                    sleep 300 # Wait for 5 minutes
+                    trigger_pipeline $PIPELINE_ID # Second trigger of the pipeline
                 fi
             done
         fi
