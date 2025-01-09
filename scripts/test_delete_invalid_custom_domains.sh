@@ -25,7 +25,7 @@ trigger_pipeline() {
                 "resources": {
                     "repositories": {
                     "self": {
-                        "refName": "refs/heads/main"
+                        "refName": "refs/heads/master"
                     }
                     }
                 },
