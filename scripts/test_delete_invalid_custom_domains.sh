@@ -25,7 +25,7 @@ trigger_pipeline() {
                 "resources": {
                     "repositories": {
                     "self": {
-                        "refName": "refs/heads/master"
+                        "refName": "refs/heads/main"
                     }
                     }
                 },
@@ -37,7 +37,7 @@ trigger_pipeline() {
                     "value": "prod shutter webapp environment: prod component: shutter static webapp service connection: dcd-cftapps-prod storage account rg: core-infra-prod-rg storage account name: cftappsprod dependsOn: sbox shutter webapp"
                     }
                 }
-            }' \
+                }' \
          "https://dev.azure.com/hmcts/PlatformOperations/_apis/pipelines/$pipeline_id/runs?api-version=6.0-preview.1"
 }
 
@@ -75,7 +75,9 @@ if [ "$DOMAIN_DELETED" = true ]; then
         IFS=":" read -r PIPELINE_TAG PIPELINE_ID <<< "$PIPELINE_PAIR"
         if [ "$PIPELINE_TAG" = "$BUILT_FROM" ]; then
             echo "Triggering pipeline with ID: $PIPELINE_ID"
-            trigger_pipeline $PIPELINE_ID
+            trigger_pipeline $PIPELINE_ID # First trigger of the pipeline
+            sleep 300 # Wait for 5 minutes
+            trigger_pipeline $PIPELINE_ID # Second trigger of the pipeline
         fi
     done
 fi
