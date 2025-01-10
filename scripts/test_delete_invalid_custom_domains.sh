@@ -76,8 +76,6 @@ if [ "$DOMAIN_DELETED" = true ]; then
         if [ "$PIPELINE_TAG" = "$BUILT_FROM" ]; then
             echo "Triggering pipeline with ID: $PIPELINE_ID"
             trigger_pipeline $PIPELINE_ID # First trigger of the pipeline
-            sleep 300 # Wait for 5 minutes
-            trigger_pipeline $PIPELINE_ID # Second trigger of the pipeline
         fi
     done
 fi
