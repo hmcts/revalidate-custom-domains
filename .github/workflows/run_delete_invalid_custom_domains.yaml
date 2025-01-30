@@ -5,6 +5,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+    SELECTED_ENV:
+      description: 'Select the environment'
+      required: true
+      default: 'sbox'
+      type: choice
+      options:
+        - sbox
+        - prod
   schedule:
     - cron: '0 0 * * 0' # This sets the workflow to run at midnight (00:00) every Sunday
     
@@ -35,3 +44,4 @@ jobs:
       run: |
         chmod +x ./scripts/delete_invalid_custom_domains.sh
         ./scripts/delete_invalid_custom_domains.sh
+        
