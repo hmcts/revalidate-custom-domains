@@ -5,7 +5,7 @@ on:
     branches:
       - main
   workflow_dispatch:
-  inputs:
+    inputs:
     SELECTED_ENV:
       description: 'Select the environment'
       required: true
@@ -42,5 +42,5 @@ jobs:
         DEPLOYMENT_SBOX: "sbox shutter webapp environment: sbox component: shutter static webapp service connection: dcd-cftapps-sbox storage account rg: core-infra-sbox-rg storage account name: cftappssbox dependsOn: Precheck pipeline tests: false"
         DEPLOYMENT_PROD: "prod shutter webapp environment: prod component: shutter static webapp service connection: dcd-cftapps-prod storage account rg: core-infra-prod-rg storage account name: cftappsprod dependsOn: sbox shutter webapp"
       run: |
-        chmod +x ./delete_invalid_custom_domains.sh
-        ./delete_invalid_custom_domains.sh
+        chmod +x ./scripts/delete_invalid_custom_domains.sh
+        ./scripts/delete_invalid_custom_domains.sh

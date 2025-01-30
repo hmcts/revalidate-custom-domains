@@ -9,7 +9,7 @@ SUBSCRIPTIONS=(
     "ed302caf-ec27-4c64-a05e-85731c3ce90e:MTA-STS-Site"
 )
 
-# Define Azure DevOps pipelines
+# Define your Azure DevOps pipelines
 PIPELINES=(
     "hmcts/azure-platform-terraform:765" # azure-platform-terraform pipeline
     "hmcts/sds-azure-platform:543" # sds-azure-platform pipeline
@@ -63,10 +63,10 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
     for APP in $STATIC_WEB_APPS; do
         echo "----------------------------------------"
         echo "Processing static web app: $APP in resource group: $RESOURCE_GROUP"
-        
+
         # Reset DOMAIN_DELETED for each static web app
         DOMAIN_DELETED=false
-
+        
         # Get tags for the current static web app
         TAGS=$(az staticwebapp show --name $APP --resource-group $RESOURCE_GROUP --query "tags" -o json)
         BUILT_FROM=$(echo $TAGS | jq -r '.builtFrom')
@@ -78,7 +78,7 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
         while IFS=$'\t' read -r DOMAIN STATUS; do
             if [[ $STATUS == "Failed" ]]; then
                 echo "  [FAILED] Deleting custom domain: $DOMAIN"
-                az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN --yes
+                az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN --yes # Delete custom domian
                 DOMAIN_DELETED=true
             else
                 echo "  [READY] Skipping custom domain: $DOMAIN"
@@ -91,7 +91,7 @@ for SUBSCRIPTION_PAIR in "${SUBSCRIPTIONS[@]}"; do
                 IFS=":" read -r PIPELINE_TAG PIPELINE_ID <<< "$PIPELINE_PAIR"
                 if [ "$PIPELINE_TAG" = "$BUILT_FROM" ]; then
                     echo "Triggering pipeline with ID: $PIPELINE_ID"
-                    trigger_pipeline $PIPELINE_ID # First trigger of the pipeline
+                    trigger_pipeline $PIPELINE_ID # Trigger the pipeline
                 fi
             done
         fi
