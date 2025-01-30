@@ -21,7 +21,23 @@ trigger_pipeline() {
     curl -u :$PAT \
          -X POST \
          -H "Content-Type: application/json" \
-         -d '{"resources": {}}' \
+         -d '{
+                "resources": {
+                    "repositories": {
+                    "self": {
+                        "refName": "refs/heads/main"
+                    }
+                    }
+                },
+                "variables": {
+                    "DEPLOYMENT_SBOX": {
+                    "value": "sbox shutter webapp environment: sbox component: shutter static webapp service connection: dcd-cftapps-sbox storage account rg: core-infra-sbox-rg storage account name: cftappssbox dependsOn: Precheck pipeline tests: false"
+                    },
+                    "DEPLOYMENT_PROD": {
+                    "value": "prod shutter webapp environment: prod component: shutter static webapp service connection: dcd-cftapps-prod storage account rg: core-infra-prod-rg storage account name: cftappsprod dependsOn: sbox shutter webapp"
+                    }
+                }
+                }' \
          "https://dev.azure.com/hmcts/PlatformOperations/_apis/pipelines/$pipeline_id/runs?api-version=6.0-preview.1"
 }
 
@@ -33,7 +49,7 @@ echo "----------------------------------------"
 echo "Processing static web app: $APP in resource group: $RESOURCE_GROUP"
 
 # Reset DOMAIN_DELETED for the static web app
-DOMAIN_DELETED=false
+DOMAIN_DELETED=true
 
 # Get tags for the current static web app
 TAGS=$(az staticwebapp show --name $APP --resource-group $RESOURCE_GROUP --query "tags" -o json)
@@ -46,7 +62,7 @@ CUSTOM_DOMAINS=$(az staticwebapp hostname list --resource-group $RESOURCE_GROUP 
 while IFS=$'\t' read -r DOMAIN STATUS; do
     if [[ $STATUS == "Failed" ]]; then
         echo "  [FAILED] Deleting custom domain: $DOMAIN"
-        az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN
+        az staticwebapp hostname delete --resource-group $RESOURCE_GROUP --name $APP --hostname $DOMAIN --yes
         DOMAIN_DELETED=true
     else
         echo "  [READY] Skipping custom domain: $DOMAIN"
@@ -59,7 +75,9 @@ if [ "$DOMAIN_DELETED" = true ]; then
         IFS=":" read -r PIPELINE_TAG PIPELINE_ID <<< "$PIPELINE_PAIR"
         if [ "$PIPELINE_TAG" = "$BUILT_FROM" ]; then
             echo "Triggering pipeline with ID: $PIPELINE_ID"
-            trigger_pipeline $PIPELINE_ID
+            trigger_pipeline $PIPELINE_ID # First trigger of the pipeline
+            sleep 300 # Wait for 5 minutes
+            trigger_pipeline $PIPELINE_ID # Second trigger of the pipeline
         fi
     done
 fi
