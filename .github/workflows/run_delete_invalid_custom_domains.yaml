@@ -44,3 +44,4 @@ jobs:
       run: |
         chmod +x ./scripts/delete_invalid_custom_domains.sh
         ./scripts/delete_invalid_custom_domains.sh
+        
